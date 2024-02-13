@@ -1,0 +1,33 @@
+# 22/09/07
+import sys
+sys.setrecursionlimit(10001)
+
+
+def bfs(current_node, final_node, depth):
+    global ans
+    print("visited %d"%(current_node))
+    visited[current_node] = True
+    if current_node == final_node:
+        ans = depth
+    for next in graph[current_node]:
+        if not visited[next]:
+            bfs(next, final_node, depth+1)
+    return
+
+
+if __name__ == '__main__':
+    input = sys.stdin.readline
+    n = int(input().strip())
+    a,b = map(int, input().strip().split())
+    num_edge = int(input().strip())
+    graph = [[] for _ in range(n+1)]
+    ans = -1
+    for _ in range(num_edge):
+        x, y = map(int,input().strip().split())
+        graph[x].append(y)
+        graph[y].append(x)
+    print(graph)
+    visited = [False]*(n+1)
+
+    bfs(a, b, 0)
+    print(ans)
