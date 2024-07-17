@@ -8,7 +8,7 @@ def solution(rectangle, cx, cy, itemX, itemY):
         return x * 2
 
     def in_range(y, x):
-        if (0 <= y < 102) and (0 <= x < 102):
+        if (0 <= y < 101) and (0 <= x < 101):
             return True
         else:
             return False
@@ -27,7 +27,7 @@ def solution(rectangle, cx, cy, itemX, itemY):
                 visited[ny][nx] = visited[cy][cx] + 1
         return 0
 
-    matrix = [[0 for _ in range(102)] for _ in range(102)]
+    matrix = [[0 for _ in range(101)] for _ in range(101)]
     cx, cy, itemX, itemY = map(expand, (cx, cy, itemX, itemY))
     for i in range(1, len(rectangle) + 1):
         sx, sy, ex, ey = map(expand, rectangle[i-1])
@@ -43,7 +43,7 @@ def solution(rectangle, cx, cy, itemX, itemY):
             for x in range(sx * 2 + 1, ex * 2):
                 matrix[y][x] = 0
 
-    visited = [[0 for _ in range(102)] for _ in range(102)]
+    visited = [[0 for _ in range(101)] for _ in range(101)]
     dy, dx = [-1, 1, 0, 0], [0, 0, -1, 1]
     answer = bfs(deque([(cy, cx)])) // 2
 
