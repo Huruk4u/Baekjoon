@@ -36,5 +36,5 @@ def solution(N, edges):
         return dist[0]
     else:
         dist = sorted(bfs(deque([leaf])), reverse=True)
-        answer = max(dist[1], dist[0]-1)
+        answer = dist[1]
         return answer
