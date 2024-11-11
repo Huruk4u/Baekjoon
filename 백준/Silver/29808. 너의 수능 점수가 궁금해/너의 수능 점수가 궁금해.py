@@ -2,19 +2,10 @@ import sys
 input = sys.stdin.readline
 
 
-def div(num, div_num):
-    if num % div_num:
-        return -1
-    if num // div_num > 200:
-        return -1
-    else:
-        return num // div_num
-
-
 if __name__ == '__main__':
     S = int(input().strip())
-
     case = []
+    
     if S % 4763:
         print(0)
     else:
