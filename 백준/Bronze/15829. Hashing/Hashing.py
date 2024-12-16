@@ -4,14 +4,12 @@ input = sys.stdin.readline
 
 if __name__ == '__main__':
     MOD = 1234567891
-
-    a = [i for i in range(1, 27)]
+    r = 31
     N = int(input().strip())
     string = input().strip()
 
-    r, answer = 1, 0
+    answer = 0
     for i in range(N):
-        answer += (a[ord(string[i]) - ord('a')] * r) % MOD
-        r *= 31
+        answer += (ord(string[i]) - ord('a') + 1) * (r ** i)
 
-    print(answer)
+    print(answer % MOD)
