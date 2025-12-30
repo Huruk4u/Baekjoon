@@ -37,7 +37,7 @@ public class Main {
         Arrays.fill(dp, Integer.MAX_VALUE);
 
         PriorityQueue<Node> heap = new PriorityQueue();
-        heap.add(new Node(A, 0));
+        heap.add(new Node(A, 0, 0));
         System.out.println(dijkstra(heap, A, B, C));
 
         br.close();
@@ -47,36 +47,36 @@ public class Main {
         dp[start] = 0;
         while (!heap.isEmpty()) {
             Node curr = heap.remove();
-
             if (curr.number == target) return dp[curr.number];
-            if (dp[curr.number] < curr.dist) continue;
+            if (dp[curr.number] < curr.maxCost) continue;
 
             for (Edge next : graph[curr.number]) {
-                if (curr.dist + next.weight > limitCost) continue;
+                if (curr.totalCost + next.weight > limitCost) continue;
                 if (dp[next.number] <= Integer.max(dp[curr.number], next.weight)) continue;
 
                 dp[next.number] = Integer.max(dp[curr.number], next.weight);
-                heap.add(new Node(next.number, curr.dist + next.weight));
+                heap.add(new Node(next.number, dp[next.number], curr.totalCost + next.weight));
             }
         }
         return -1;
     }
 
     private static class Node implements Comparable<Node> {
-        int number, dist;
-        public Node(int number, int dist) {
+        int number, maxCost, totalCost;
+        public Node(int number, int maxCost, int totalCost) {
             this.number = number;
-            this.dist = dist;
+            this.maxCost = maxCost;
+            this.totalCost = totalCost;
         }
 
         @Override
         public int compareTo(Node other) {
-            return Integer.compare(this.dist, other.dist);
+            return Integer.compare(this.maxCost, other.maxCost);
         }
 
         @Override
         public String toString() {
-            return String.format("(%d, %d)", number, dist);
+            return String.format("(%d, %d)", number, totalCost);
         }
     }
 
