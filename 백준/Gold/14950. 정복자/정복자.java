@@ -1,15 +1,15 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main {
 
     private static int N, M, T;
 
-    private static List<Edge>[] graph;
-
-    private static int[] visited;
+    private static int[] parent;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,71 +20,58 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         T = Integer.parseInt(st.nextToken());
 
-        graph = new ArrayList[N+1];
-        for (int i = 0; i < N+1; i++) graph[i] = new ArrayList<>();
+        parent = new int[N+1];
+        for (int i = 0; i < N+1; i++) parent[i] = i;
 
-        for (int i =0; i < M; i++) {
+        PriorityQueue<Edge> heap = new PriorityQueue<>();
+        for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine().trim());
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
             int w = Integer.parseInt(st.nextToken());
-
-            graph[u].add(new Edge(v, w));
-            graph[v].add(new Edge(u, w));
+            heap.add(new Edge(u, v, w));
         }
 
-        PriorityQueue<State> heap = new PriorityQueue();
-        heap.add(new State(1, 0));
-
-        visited = new int[N+1];
-        Arrays.fill(visited, -1);
-        solve(heap);
-
         int answer = 0;
-        for (int i = 1; i < N+1; i++) answer += visited[i];
+        while (!heap.isEmpty()) {
+            Edge curr = heap.remove();
+            if (union(curr.u, curr.v)) answer += curr.weight;
+        }
         answer += T * (((N-1) * (N-2)) / 2);
-
         System.out.println(answer);
 
         br.close();
     }
 
-    private static void solve(PriorityQueue<State> heap) {
-        while (!heap.isEmpty()) {
-            State curr = heap.remove();
-            if (visited[curr.number] != -1) {
-                continue;
-            } else {
-                visited[curr.number] = curr.cost;
-            }
-
-            for (Edge next : graph[curr.number]) {
-                if (visited[next.number] != -1) continue;
-                heap.add(new State(next.number, next.weight));
-            }
-        }
+    private static int find(int node) {
+        if (parent[node] == node) return node;
+        parent[node] = find(parent[node]);
+        return parent[node];
     }
 
-    private static class State implements Comparable<State> {
-        int number, cost;
+    private static boolean union(int u, int v){
+        int root_u = find(u);
+        int root_v = find(v);
 
-        State(int number, int cost) {
-            this.number = number;
-            this.cost = cost;
+        if (root_u == root_v) return false;
+
+        if (root_u < root_v) parent[root_v] = root_u;
+        else parent[root_u] = root_v;
+        return true;
+    }
+
+    private static class Edge implements Comparable<Edge> {
+        int u, v, weight;
+
+        Edge (int u, int v, int weight) {
+            this.u = u;
+            this.v = v;
+            this.weight = weight;
         }
 
         @Override
-        public int compareTo(State other) {
-            return Integer.compare(this.cost, other.cost);
-        }
-    }
-
-    private static class Edge {
-        int number, weight;
-
-        Edge(int number, int weight) {
-            this.number = number;
-            this.weight = weight;
+        public int compareTo(Edge other) {
+            return Integer.compare(this.weight, other.weight);
         }
     }
 }
