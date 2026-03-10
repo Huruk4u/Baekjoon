@@ -10,7 +10,7 @@ public class Main {
 
     private static int N, K;
 
-    private static HashMap<Long, Boolean> visited;
+    private static HashMap<Integer, Boolean> visited;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,7 +24,7 @@ public class Main {
         visited = new HashMap();
         st = new StringTokenizer(br.readLine().trim());
         for (int i = 0; i < N; i++) {
-            long position = Long.parseLong(st.nextToken());
+            int position = Integer.parseInt(st.nextToken());
             queue.add(new Node(position, 0));
             visited.put(position, true);
         }
@@ -36,13 +36,13 @@ public class Main {
     private static long bfs(Queue<Node> queue) {
         int cnt = 0;
         long rtn = 0;
-        long np;
+        int np;
         while (!queue.isEmpty()) {
             Node curr = queue.remove();
-            if (curr.dist != 0) cnt++; // 현재 위치가 샘이 아니면 cnt를 한다.
+            if (curr.dist != 0) cnt++;
 
             rtn += curr.dist;
-            if (cnt == K) return rtn; // 모든 집을 찾았으면, 더이상 search를 하지 않는다.
+            if (cnt == K) return rtn;
 
             np = curr.position - 1;
             if (!visited.containsKey(np)) {
@@ -60,9 +60,9 @@ public class Main {
     }
 
     private static class Node {
-        long position, dist;
+        int position, dist;
 
-        Node (long position, long dist) {
+        Node (int position, int dist) {
             this.position = position;
             this.dist = dist;
         }
