@@ -14,12 +14,12 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         // isPrime def
-        isPrime = new boolean[300001];
+        isPrime = new boolean[100001];
         Arrays.fill(isPrime, true);
 
         isPrime[0] = isPrime[1] = false;
-        for (int i = 2; i < Math.sqrt(300001); i++) {
-            for (int j = i * i; j < 300001; j += i) {
+        for (int i = 2; i < Math.sqrt(100001); i++) {
+            for (int j = i * i; j < 100001; j += i) {
                 isPrime[j] = false;
             }
         }
